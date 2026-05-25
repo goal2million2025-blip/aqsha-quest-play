@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>AqshaLingo — Қаржылық сауаттылық ойыны</title>
+<meta name="description" content="AqshaLingo — Duolingo-style ойын арқылы қаржылық сауаттылықты үйрен. Бюджет, жинақ, инвестиция, несие, сақтандыру." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo" data-act="home">💸 AqshaLingo</div>
+  <div class="nav-pills">
+    <div class="pill pill-lvl" data-act="profile" title="Деңгей"><span id="lvlNum">1</span></div>
+    <div class="pill pill-s" title="Streak">🔥 <span id="sNum">0</span></div>
+    <div class="pill pill-x" title="XP">⭐ <span id="xpNum">0</span></div>
+    <div class="pill pill-h" data-act="shop" title="Hearts">❤️ <span id="hpNum">5</span></div>
+    <button class="icon-btn" data-act="sound" id="soundBtn" title="Дыбыс">🔊</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="screen active" id="homeScreen">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-t" id="heroT">Сәлем! Бүгін үйренеміз 🚀</div>
+      <div class="hero-s">Ойнап үйрен — ақыл табыс әкеледі</div>
+      <button class="hero-btn" data-act="continue">Жалғастыру →</button>
+    </div>
+    <div class="hero-em">💰</div>
+  </div>
+
+  <div class="daily" data-act="daily">
+    <div class="daily-icon">🎯</div>
+    <div>
+      <div class="daily-title">Күнделікті челлендж</div>
+      <div class="daily-sub" id="dailySub">Бүгінгі тапсырманы орында!</div>
+    </div>
+    <button class="daily-btn">Бастау →</button>
+  </div>
+
+  <div class="row-2">
+    <button class="quick-card qc-pu" data-act="achievements">
+      <span class="qc-em">🏆</span><span class="qc-t">Жетістіктер</span>
+      <span class="qc-s" id="achCount">0/12</span>
+    </button>
+    <button class="quick-card qc-bl" data-act="leaderboard">
+      <span class="qc-em">📊</span><span class="qc-t">Рейтинг</span>
+      <span class="qc-s" id="rankInfo">Bronze</span>
+    </button>
+  </div>
+
+  <div class="sec-t">📚 Модульдер</div>
+  <div class="mod-scroll" id="modScroll"></div>
+
+  <div class="sec-t">🗺️ Оқу жолы</div>
+  <div class="path-wrap" id="pathWrap"></div>
+</div>
+
+<!-- MODULE -->
+<div class="screen" id="moduleScreen">
+  <div class="mhd">
+    <button class="back" data-act="home">←</button>
+    <div class="mhd-info">
+      <div class="mhd-t" id="mdTitle"></div>
+      <div class="mhd-s" id="mdSub"></div>
+    </div>
+  </div>
+  <div class="les-grid" id="lessonGrid"></div>
+</div>
+
+<!-- LESSON -->
+<div class="screen" id="lessonScreen">
+  <div class="les-hd">
+    <button class="back" data-act="module">←</button>
+    <div class="lp-bar"><div class="lp-fill" id="lpFill"></div></div>
+    <div class="lxp"><span id="lhpView">❤️5</span></div>
+    <div class="lxp" id="lxpBadge">+0 XP</div>
+  </div>
+  <div id="lessonContent"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="cont-btn" id="checkBtn">Тексеру</button>
+</div>
+
+<!-- WIN -->
+<div class="screen" id="winScreen">
+  <div class="win-wrap">
+    <span class="win-em" id="winEm">🏆</span>
+    <div class="win-t" id="winT">Керемет!</div>
+    <div class="win-s" id="winS">Сабақты сәтті аяқтадың!</div>
+    <div class="stars-row" id="starsRow"></div>
+    <div class="xp-big">⭐ +<span id="winXP">0</span> XP</div>
+    <div class="combo-line"><span id="comboInfo"></span></div>
+    <div class="tip-box"><span style="font-size:18px">💡</span><span id="winTip"></span></div>
+    <button class="cont-btn" data-act="module">Сабақтарға оралу →</button>
+    <button class="cont-btn ghost" data-act="home">Басты бет</button>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="screen" id="profileScreen">
+  <div class="mhd">
+    <button class="back" data-act="home">←</button>
+    <div class="mhd-info"><div class="mhd-t">Профиль</div><div class="mhd-s">Сенің прогресің</div></div>
+  </div>
+  <div class="prof-card">
+    <div class="prof-avatar" id="profAvatar">🦉</div>
+    <div class="prof-info">
+      <div class="prof-name">Aqsha Student</div>
+      <div class="prof-lvl">Деңгей <span id="profLvl">1</span> · <span id="profRank">Bronze</span></div>
+      <div class="prof-bar"><div class="prof-fill" id="profFill"></div></div>
+      <div class="prof-xp"><span id="profXP">0</span> / <span id="profXPNext">100</span> XP</div>
+    </div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-em">🔥</div><div class="stat-v" id="stStreak">0</div><div class="stat-l">Streak</div></div>
+    <div class="stat-card"><div class="stat-em">⭐</div><div class="stat-v" id="stXP">0</div><div class="stat-l">Total XP</div></div>
+    <div class="stat-card"><div class="stat-em">🎓</div><div class="stat-v" id="stLessons">0</div><div class="stat-l">Сабақ</div></div>
+    <div class="stat-card"><div class="stat-em">🏆</div><div class="stat-v" id="stAch">0</div><div class="stat-l">Жетістік</div></div>
+  </div>
+  <div class="sec-t">Аватар таңда</div>
+  <div class="avatar-row" id="avatarRow"></div>
+  <div class="sec-t">Параметрлер</div>
+  <div class="settings-list">
+    <label class="setting-row"><span>🌙 Қара режим</span><input type="checkbox" id="darkToggle"></label>
+    <label class="setting-row"><span>🔊 Дыбыс</span><input type="checkbox" id="soundToggle" checked></label>
+    <button class="setting-row danger" data-act="reset">🗑️ Прогресті өшіру</button>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="screen" id="shopScreen">
+  <div class="mhd">
+    <button class="back" data-act="home">←</button>
+    <div class="mhd-info"><div class="mhd-t">Дүкен</div><div class="mhd-s">XP-ға айырбаста</div></div>
+  </div>
+  <div class="shop-coin">⭐ <span id="shopXP">0</span> XP</div>
+  <div class="shop-grid" id="shopGrid"></div>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<div class="screen" id="achScreen">
+  <div class="mhd">
+    <button class="back" data-act="home">←</button>
+    <div class="mhd-info"><div class="mhd-t">Жетістіктер</div><div class="mhd-s">Барлық белгілер</div></div>
+  </div>
+  <div class="ach-grid" id="achGrid"></div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="screen" id="lbScreen">
+  <div class="mhd">
+    <button class="back" data-act="home">←</button>
+    <div class="mhd-info"><div class="mhd-t">Апта рейтингі</div><div class="mhd-s">Үздіктер арасында бол</div></div>
+  </div>
+  <div class="lb-list" id="lbList"></div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+<div class="toast-wrap" id="toastWrap"></div>
+<canvas id="confettiCanvas"></canvas>
+
+<script src="js/audio.js"></script>
+<script src="js/state.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/games.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
