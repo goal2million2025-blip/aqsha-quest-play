@@ -39,12 +39,14 @@ const Engine = (() => {
     btn.disabled = !current.hasAnswer();
   }
 
-  let waitingNext = false;
+  let waitingNext = false, canRetry = false;
   function onCheck() {
     if (waitingNext) { next(); return; }
+    if (canRetry) { canRetry = false; renderStep(); return; }
     if (!current || !current.hasAnswer()) return;
     const res = current.check();
     const fb = document.getElementById('feedback');
+    const btn = document.getElementById('checkBtn');
     if (res.ok) {
       combo++; comboMax = Math.max(comboMax, combo);
       const base = 5; const bonus = combo >= 3 ? Math.floor(combo / 2) : 0;
@@ -54,21 +56,27 @@ const Engine = (() => {
       fb.className = 'feedback ok';
       fb.innerHTML = `✅ Дұрыс! +${gained} XP${combo>=3?' 🔥 '+combo+'x':''}`;
       if (combo >= 5) Achv.unlock('combo5');
+      waitingNext = true;
+      btn.textContent = 'Жалғастыру →'; btn.disabled = false;
     } else {
       combo = 0; mistakes++;
       State.loseHp();
       Audio.wrong();
+      const expl = curLesson.steps[stepIdx].expl || curLesson.tip || 'Қайтадан жақсылап ойлап көр!';
       fb.className = 'feedback no';
-      fb.innerHTML = `❌ Қате — жүрек минус. Жалғастыр!`;
+      fb.innerHTML = `❌ Қате — жүрек минус.<br><span style="font-size:12px;font-weight:600">💡 ${expl}</span>`;
       document.getElementById('lessonContent').classList.add('shake');
       setTimeout(() => document.getElementById('lessonContent').classList.remove('shake'), 320);
+      document.getElementById('lhpView').textContent = '❤️' + State.get().hp;
+      UI.renderHud();
+      if (State.get().hp <= 0) { setTimeout(() => failOut(), 700); return; }
+      canRetry = true;
+      btn.textContent = '🔄 Қайта көру'; btn.disabled = false;
+      return;
     }
     document.getElementById('lhpView').textContent = '❤️' + State.get().hp;
     document.getElementById('lxpBadge').textContent = `+${xpGained} XP`;
     UI.renderHud();
-    if (State.get().hp <= 0) { setTimeout(() => failOut(), 700); return; }
-    waitingNext = true;
-    const btn = document.getElementById('checkBtn'); btn.textContent = 'Жалғастыру →'; btn.disabled = false;
   }
 
   function next() {
