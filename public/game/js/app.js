@@ -39,12 +39,14 @@ const Engine = (() => {
     btn.disabled = !current.hasAnswer();
   }
 
-  let waitingNext = false;
+  let waitingNext = false, canRetry = false;
   function onCheck() {
     if (waitingNext) { next(); return; }
+    if (canRetry) { canRetry = false; renderStep(); return; }
     if (!current || !current.hasAnswer()) return;
     const res = current.check();
     const fb = document.getElementById('feedback');
+    const btn = document.getElementById('checkBtn');
     if (res.ok) {
       combo++; comboMax = Math.max(comboMax, combo);
       const base = 5; const bonus = combo >= 3 ? Math.floor(combo / 2) : 0;
@@ -54,21 +56,27 @@ const Engine = (() => {
       fb.className = 'feedback ok';
       fb.innerHTML = `✅ Дұрыс! +${gained} XP${combo>=3?' 🔥 '+combo+'x':''}`;
       if (combo >= 5) Achv.unlock('combo5');
+      waitingNext = true;
+      btn.textContent = 'Жалғастыру →'; btn.disabled = false;
     } else {
       combo = 0; mistakes++;
       State.loseHp();
       Audio.wrong();
+      const expl = curLesson.steps[stepIdx].expl || curLesson.tip || 'Қайтадан жақсылап ойлап көр!';
       fb.className = 'feedback no';
-      fb.innerHTML = `❌ Қате — жүрек минус. Жалғастыр!`;
+      fb.innerHTML = `❌ Қате — жүрек минус.<br><span style="font-size:12px;font-weight:600">💡 ${expl}</span>`;
       document.getElementById('lessonContent').classList.add('shake');
       setTimeout(() => document.getElementById('lessonContent').classList.remove('shake'), 320);
+      document.getElementById('lhpView').textContent = '❤️' + State.get().hp;
+      UI.renderHud();
+      if (State.get().hp <= 0) { setTimeout(() => failOut(), 700); return; }
+      canRetry = true;
+      btn.textContent = '🔄 Қайта көру'; btn.disabled = false;
+      return;
     }
     document.getElementById('lhpView').textContent = '❤️' + State.get().hp;
     document.getElementById('lxpBadge').textContent = `+${xpGained} XP`;
     UI.renderHud();
-    if (State.get().hp <= 0) { setTimeout(() => failOut(), 700); return; }
-    waitingNext = true;
-    const btn = document.getElementById('checkBtn'); btn.textContent = 'Жалғастыру →'; btn.disabled = false;
   }
 
   function next() {
@@ -94,14 +102,32 @@ const Engine = (() => {
     State.addXp(totalXp);
     const stars = perfect ? 3 : (mistakes <= 1 ? 2 : 1);
     State.completeLesson(curLesson.id, stars, totalXp);
-    // module-completion achievements
+    // module-completion achievements + next-module unlock popup
     const mod = MOD_BY_ID[curLesson._modId];
-    if (mod.lessons.every(l => State.get().completed[l.id])) {
+    const justFinished = mod.lessons.every(l => State.get().completed[l.id]);
+    if (justFinished) {
       const map = { budget:'budgetMaster', saving:'saverPro', invest:'investor', credit:'creditWise', insure:'protected' };
       if (map[mod.id]) Achv.unlock(map[mod.id]);
+      const order = ['budget','saving','invest','credit','insure'];
+      const nextId = order[order.indexOf(mod.id)+1];
+      const d2 = State.get();
+      if (nextId && !d2.unlockedMods.includes(nextId)) {
+        d2.unlockedMods.push(nextId); State.save();
+        const nm = MOD_BY_ID[nextId];
+        setTimeout(() => {
+          Audio.levelUp();
+          UI.modal(`<span class="em" style="font-size:60px">${nm.icon}</span>
+            <h3 style="margin:8px 0">🎉 Жаңа модуль ашылды!</h3>
+            <p style="font-weight:800;color:${nm.color};font-size:18px">${nm.title}</p>
+            <p style="font-size:13px;color:var(--muted);margin:6px 0 12px">${nm.sub}</p>
+            <button class="cont-btn" onclick="UI.closeModal();Router.openModule('${nextId}')">Бастау →</button>
+            <button class="cont-btn ghost" onclick="UI.closeModal()">Кейінірек</button>`);
+        }, 1200);
+      }
     }
     Audio.chest();
     UI.confetti();
+
 
     document.getElementById('winXP').textContent = totalXp;
     document.getElementById('winTip').textContent = curLesson.tip || '';
@@ -297,6 +323,17 @@ const Router = (() => {
   function go(target) {
     switch (target) {
       case 'home': renderHome(); break;
+      case 'back': {
+        const prev = UI.back();
+        // re-render data for the screen we just returned to
+        if (prev === 'homeScreen') renderHome();
+        else if (prev === 'moduleScreen' && curMod) openModule(curMod.id);
+        else if (prev === 'profileScreen') renderProfile();
+        else if (prev === 'shopScreen') renderShop();
+        else if (prev === 'achScreen') renderAch();
+        else if (prev === 'lbScreen') renderLB();
+        break;
+      }
       case 'module': curMod ? openModule(curMod.id) : renderHome(); break;
       case 'profile': renderProfile(); break;
       case 'shop': renderShop(); break;

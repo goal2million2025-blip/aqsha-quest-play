@@ -1,8 +1,15 @@
 const UI = (() => {
   const screens = ['homeScreen','moduleScreen','lessonScreen','winScreen','profileScreen','shopScreen','achScreen','lbScreen'];
-  const show = id => {
+  const history = ['homeScreen'];
+  const show = (id, opts = {}) => {
     screens.forEach(s => document.getElementById(s).classList.toggle('active', s === id));
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (!opts.replace && history[history.length-1] !== id) history.push(id);
+    if (history.length > 30) history.shift();
+  };
+  const back = () => {
+    if (history.length > 1) { history.pop(); const prev = history[history.length-1]; show(prev, {replace:true}); return prev; }
+    show('homeScreen', {replace:true}); return 'homeScreen';
   };
   const toast = (msg, type = '') => {
     const w = document.getElementById('toastWrap');
@@ -60,5 +67,5 @@ const UI = (() => {
     document.body.classList.toggle('dark', !!d.settings.dark);
   };
 
-  return { show, toast, modal, closeModal, confetti, renderHud };
+  return { show, back, toast, modal, closeModal, confetti, renderHud, history };
 })();
