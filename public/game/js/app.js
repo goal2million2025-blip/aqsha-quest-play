@@ -323,6 +323,17 @@ const Router = (() => {
   function go(target) {
     switch (target) {
       case 'home': renderHome(); break;
+      case 'back': {
+        const prev = UI.back();
+        // re-render data for the screen we just returned to
+        if (prev === 'homeScreen') renderHome();
+        else if (prev === 'moduleScreen' && curMod) openModule(curMod.id);
+        else if (prev === 'profileScreen') renderProfile();
+        else if (prev === 'shopScreen') renderShop();
+        else if (prev === 'achScreen') renderAch();
+        else if (prev === 'lbScreen') renderLB();
+        break;
+      }
       case 'module': curMod ? openModule(curMod.id) : renderHome(); break;
       case 'profile': renderProfile(); break;
       case 'shop': renderShop(); break;
