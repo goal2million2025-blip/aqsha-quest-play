@@ -102,14 +102,32 @@ const Engine = (() => {
     State.addXp(totalXp);
     const stars = perfect ? 3 : (mistakes <= 1 ? 2 : 1);
     State.completeLesson(curLesson.id, stars, totalXp);
-    // module-completion achievements
+    // module-completion achievements + next-module unlock popup
     const mod = MOD_BY_ID[curLesson._modId];
-    if (mod.lessons.every(l => State.get().completed[l.id])) {
+    const justFinished = mod.lessons.every(l => State.get().completed[l.id]);
+    if (justFinished) {
       const map = { budget:'budgetMaster', saving:'saverPro', invest:'investor', credit:'creditWise', insure:'protected' };
       if (map[mod.id]) Achv.unlock(map[mod.id]);
+      const order = ['budget','saving','invest','credit','insure'];
+      const nextId = order[order.indexOf(mod.id)+1];
+      const d2 = State.get();
+      if (nextId && !d2.unlockedMods.includes(nextId)) {
+        d2.unlockedMods.push(nextId); State.save();
+        const nm = MOD_BY_ID[nextId];
+        setTimeout(() => {
+          Audio.levelUp();
+          UI.modal(`<span class="em" style="font-size:60px">${nm.icon}</span>
+            <h3 style="margin:8px 0">🎉 Жаңа модуль ашылды!</h3>
+            <p style="font-weight:800;color:${nm.color};font-size:18px">${nm.title}</p>
+            <p style="font-size:13px;color:var(--muted);margin:6px 0 12px">${nm.sub}</p>
+            <button class="cont-btn" onclick="UI.closeModal();Router.openModule('${nextId}')">Бастау →</button>
+            <button class="cont-btn ghost" onclick="UI.closeModal()">Кейінірек</button>`);
+        }, 1200);
+      }
     }
     Audio.chest();
     UI.confetti();
+
 
     document.getElementById('winXP').textContent = totalXp;
     document.getElementById('winTip').textContent = curLesson.tip || '';
