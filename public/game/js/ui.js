@@ -67,5 +67,5 @@ const UI = (() => {
     document.body.classList.toggle('dark', !!d.settings.dark);
   };
 
-  return { show, toast, modal, closeModal, confetti, renderHud };
+  return { show, back, toast, modal, closeModal, confetti, renderHud, history };
 })();
