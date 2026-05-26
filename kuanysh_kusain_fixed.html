@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuanysh Kusain — Calisthenics Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--black:#0A0A0A;
+--black2:#111111;
+--black3:#1a1a1a;
+--red:#FF3D00;
+--gold:#D4A017;
+--teal:#00C4B4;
+--white:#F5F3EE;
+--gray:#888888;
+--gray2:#555555;
+--border:rgba(255,255,255,0.07);
+--border2:rgba(255,255,255,0.12);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:12px;height:12px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;mix-blend-mode:normal}
+.cursor-follower{position:fixed;width:36px;height:36px;border:1px solid rgba(255,61,0,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease}
+.cursor.hover{width:20px;height:20px;background:var(--gold)}
+.cursor-follower.hover{width:52px;height:52px;border-color:rgba(212,160,23,0.6)}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red)}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;transition:all 0.5s ease;background:transparent}
+header.scrolled{background:rgba(10,10,10,0.95);backdrop-filter:blur(20px);padding:16px 48px;border-bottom:1px solid var(--border)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);text-decoration:none}
+.logo span{color:var(--red)}
+nav{display:flex;gap:40px;align-items:center}
+nav a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color 0.3s;font-weight:500}
+nav a:hover{color:var(--white)}
+.cta-btn{background:var(--red);color:var(--white);padding:10px 24px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;border:none;cursor:none;transition:all 0.3s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.cta-btn:hover{background:var(--gold);transform:translateY(-1px)}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;align-items:flex-end;overflow:hidden;min-height:700px}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0A0A0A 0%,#1a0a00 50%,#0A0A0A 100%);z-index:0}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,61,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,61,0,0.03) 1px,transparent 1px);background-size:60px 60px;z-index:1}
+.hero-noise{position:absolute;inset:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");z-index:2}
+.hero-accent{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,61,0,0.08) 0%,transparent 70%);z-index:1}
+.hero-content{position:relative;z-index:10;padding:0 48px 80px;width:100%;max-width:900px}
+.hero-eyebrow{display:flex;align-items:center;gap:16px;margin-bottom:24px;animation:fadeUp 1s ease 0.2s both}
+.hero-eyebrow span{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:600}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--red)}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,10vw,140px);line-height:0.9;letter-spacing:2px;margin-bottom:32px;animation:fadeUp 1s ease 0.4s both}
+.hero-title .line2{color:var(--red);display:block}
+.hero-title .outline{-webkit-text-stroke:1px rgba(255,255,255,0.2);color:transparent;display:block}
+.hero-sub{font-size:14px;letter-spacing:1px;color:var(--gray);max-width:400px;line-height:1.8;margin-bottom:48px;animation:fadeUp 1s ease 0.6s both}
+.hero-actions{display:flex;gap:20px;align-items:center;animation:fadeUp 1s ease 0.8s both}
+.btn-primary{background:var(--red);color:var(--white);padding:16px 40px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;cursor:none;transition:all 0.4s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);display:inline-block;text-decoration:none}
+.btn-primary:hover{background:var(--gold);transform:translateY(-2px)}
+.btn-ghost{color:var(--white);padding:16px 40px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:600;border:1px solid rgba(255,255,255,0.2);cursor:none;transition:all 0.4s;background:transparent;text-decoration:none;display:inline-block}
+.btn-ghost:hover{border-color:var(--red);color:var(--red)}
+.hero-stats{position:absolute;right:48px;bottom:80px;z-index:10;display:flex;flex-direction:column;gap:24px;animation:fadeLeft 1s ease 1s both}
+.stat{text-align:right}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;color:var(--white);letter-spacing:2px}
+.stat-num span{color:var(--red)}
+.stat-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-top:4px}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp 1s ease 1.2s both}
+.hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--red),transparent);animation:scrollPulse 2s ease infinite}
+
+/* SECTIONS */
+section{padding:120px 48px}
+.section-label{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.section-label span{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:600}
+.section-label::before{content:'';width:32px;height:1px;background:var(--red)}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6vw,88px);line-height:0.95;letter-spacing:2px;margin-bottom:24px}
+.section-sub{font-size:14px;color:var(--gray);line-height:1.8;max-width:520px}
+
+/* ABOUT */
+.about{background:var(--black2)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1200px;margin:0 auto}
+.about-visual{position:relative}
+.about-img-frame{width:100%;aspect-ratio:3/4;background:var(--black3);border:1px solid var(--border2);position:relative;overflow:hidden}
+.about-img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#1a0a00,#0a0a0a);display:flex;align-items:center;justify-content:center}
+.about-img-placeholder .figure{font-family:'Bebas Neue',sans-serif;font-size:120px;color:rgba(255,61,0,0.08);letter-spacing:10px}
+.about-badge{position:absolute;bottom:-20px;right:-20px;background:var(--red);padding:20px 24px;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%)}
+.about-badge .num{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;color:var(--white)}
+.about-badge .txt{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.7)}
+.about-corner{position:absolute;top:-12px;left:-12px;width:80px;height:80px;border-left:2px solid var(--red);border-top:2px solid var(--red)}
+.about-text{padding:40px 0}
+.about-text p{font-size:15px;color:rgba(245,243,238,0.7);line-height:1.9;margin-bottom:20px}
+.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.tag{padding:6px 16px;border:1px solid var(--border2);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);transition:all 0.3s}
+.tag:hover{border-color:var(--red);color:var(--red)}
+
+/* PROGRAMS */
+.programs{background:var(--black)}
+.programs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:64px;max-width:1200px;margin-left:auto;margin-right:auto}
+.program-card{background:var(--black);padding:48px 40px;position:relative;transition:all 0.5s;cursor:none}
+.program-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,0,0.05),transparent);opacity:0;transition:opacity 0.5s;pointer-events:none}
+.program-card:hover::before{opacity:1}
+.program-card:hover{background:var(--black3)}
+.program-card:hover .program-num{color:var(--red);-webkit-text-stroke-color:var(--red)}
+.program-num{font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;-webkit-text-stroke:1px rgba(255,255,255,0.08);color:transparent;position:absolute;top:24px;right:32px;transition:all 0.5s}
+.program-icon{width:48px;height:48px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;margin-bottom:32px;transition:all 0.5s}
+.program-card:hover .program-icon{border-color:var(--red)}
+.program-icon svg{width:24px;height:24px;stroke:var(--gray)}
+.program-card:hover .program-icon svg{stroke:var(--red)}
+.program-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;line-height:1.1}
+.program-desc{font-size:13px;color:var(--gray);line-height:1.8;margin-bottom:32px}
+.program-price{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--white);letter-spacing:2px}
+.program-price span{font-family:'Inter',sans-serif;font-size:11px;color:var(--gray);letter-spacing:1px;font-weight:400}
+.program-link{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-top:24px;transition:gap 0.3s;cursor:none}
+.program-card:hover .program-link{gap:16px}
+
+/* RESULTS */
+.results{background:var(--black2)}
+.results-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;max-width:1200px;margin-left:auto;margin-right:auto}
+.results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:1200px;margin:0 auto}
+.result-card{aspect-ratio:3/4;background:var(--black3);position:relative;overflow:hidden;cursor:none}
+.result-inner{width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a,#0f0f0f);display:flex;align-items:center;justify-content:center;position:relative}
+.result-label{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(0,0,0,0.9),transparent)}
+.result-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.result-period{font-size:10px;color:var(--gray);letter-spacing:2px}
+.result-badge{position:absolute;top:12px;left:12px;background:var(--red);padding:4px 10px;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.result-placeholder{font-family:'Bebas Neue',sans-serif;font-size:48px;color:rgba(255,255,255,0.04);letter-spacing:4px}
+.result-card::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color 0.4s}
+.result-card:hover::after{border-color:var(--red)}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--black)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:64px;max-width:1200px;margin-left:auto;margin-right:auto}
+.testi-card{background:var(--black);padding:40px;transition:background 0.4s;cursor:none}
+.testi-card:hover{background:var(--black3)}
+.testi-stars{display:flex;gap:4px;margin-bottom:20px}
+.star{color:var(--gold);font-size:14px}
+.testi-text{font-size:14px;color:rgba(245,243,238,0.75);line-height:1.9;margin-bottom:28px;font-style:italic}
+.testi-text::before{content:'"';font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--red);line-height:0.5;display:block;margin-bottom:16px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:40px;height:40px;border-radius:50%;background:var(--black3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--red);flex-shrink:0}
+.author-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.author-info{font-size:11px;color:var(--gray);letter-spacing:1px}
+
+/* CTA */
+.cta-block{background:var(--red);padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-block::before{content:'ДАЙЫНСЫҢ БА';font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,15vw,200px);color:rgba(0,0,0,0.12);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;letter-spacing:8px;pointer-events:none}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,8vw,110px);line-height:0.95;letter-spacing:2px;position:relative;z-index:1;margin-bottom:24px}
+.cta-sub{font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:48px;position:relative;z-index:1;letter-spacing:0.5px}
+.btn-dark{background:var(--black);color:var(--white);padding:18px 52px;font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;cursor:none;transition:all 0.4s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);display:inline-block;text-decoration:none;position:relative;z-index:1}
+.btn-dark:hover{background:var(--black2);transform:translateY(-2px)}
+
+/* FAQ */
+.faq{background:var(--black2)}
+.faq-list{max-width:800px;margin:64px auto 0}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-q{padding:28px 0;display:flex;justify-content:space-between;align-items:center;cursor:none;transition:color 0.3s}
+.faq-q:hover{color:var(--red)}
+.faq-q span{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.faq-icon{width:28px;height:28px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0}
+.faq-icon svg{transition:transform 0.3s}
+.faq-item.open .faq-icon{border-color:var(--red);background:var(--red)}
+.faq-item.open .faq-icon svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.5s ease,padding 0.3s}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:24px}
+.faq-a p{font-size:14px;color:var(--gray);line-height:1.9}
+
+/* FOOTER */
+footer{background:var(--black);padding:64px 48px 40px;border-top:1px solid var(--border)}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:64px}
+.footer-brand .logo{font-size:28px;display:block;margin-bottom:16px}
+.footer-brand p{font-size:13px;color:var(--gray);line-height:1.8;max-width:260px}
+.footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--white);margin-bottom:20px}
+.footer-col a{display:block;font-size:13px;color:var(--gray);text-decoration:none;margin-bottom:10px;transition:color 0.3s}
+.footer-col a:hover{color:var(--red)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid var(--border)}
+.footer-bottom p{font-size:11px;color:var(--gray2);letter-spacing:1px}
+.social-links{display:flex;gap:16px}
+.social-link{width:36px;height:36px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray);text-decoration:none;transition:all 0.3s;font-weight:600}
+.social-link:hover{border-color:var(--red);color:var(--red)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* DIVIDER */
+.marquee-section{background:var(--red);padding:16px 0;overflow:hidden;position:relative}
+.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 20s linear infinite}
+.marquee-item{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:rgba(0,0,0,0.4);padding:0 32px;flex-shrink:0}
+.marquee-dot{color:rgba(0,0,0,0.6)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+header{padding:16px 20px}
+header.scrolled{padding:12px 20px}
+nav{display:none}
+.cta-btn{padding:9px 16px;font-size:10px;letter-spacing:1.5px}
+section{padding:80px 24px}
+.hero{min-height:auto;height:auto;padding-top:120px;padding-bottom:60px;align-items:stretch}
+.hero-content{padding:0 24px;max-width:100%}
+.hero-title{font-size:clamp(56px,14vw,96px)}
+.hero-stats{position:static;flex-direction:row;justify-content:space-between;gap:12px;margin-top:48px;padding:0 24px;animation:fadeUp 1s ease 1s both}
+.stat{text-align:left;flex:1}
+.stat-num{font-size:32px}
+.hero-scroll{display:none}
+.about-inner{grid-template-columns:1fr;gap:48px}
+.programs-grid{grid-template-columns:1fr;margin-top:48px}
+.results-grid{grid-template-columns:repeat(2,1fr)}
+.results-header{flex-direction:column;gap:24px;align-items:flex-start}
+.testi-grid{grid-template-columns:1fr;margin-top:48px}
+.footer-top{grid-template-columns:1fr 1fr;gap:32px}
+.footer-bottom{flex-direction:column;gap:20px;text-align:center}
+.cta-block{padding:80px 24px}
+}
+
+/* Touch / no-hover devices: disable custom cursor */
+@media (hover:none),(pointer:coarse){
+body,.cta-btn,.btn-primary,.btn-ghost,.btn-dark,.program-card,.testi-card,.result-card,.faq-q,.program-link,a,button{cursor:auto}
+.cursor,.cursor-follower{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="follower"></div>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="#" class="logo">KK<span>.</span></a>
+  <nav>
+    <a href="#about">Мен туралы</a>
+    <a href="#programs">Бағдарламалар</a>
+    <a href="#results">Нәтижелер</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <button class="cta-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Тіркелу</button>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-accent"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span>Калестеника &amp; Воркаут Тренер</span>
+    </div>
+    <h1 class="hero-title">
+      <span>KUANYSH</span>
+      <span class="line2">KUSAIN</span>
+      <span class="outline">STRONGER.</span>
+    </h1>
+    <p class="hero-sub">Қарапайым құралдармен максималды нәтиже. Дисциплина — бұл бостандыққа апаратын жол.</p>
+    <div class="hero-actions">
+      <a href="#programs" class="btn-primary">Бастау</a>
+      <a href="#results" class="btn-ghost">Нәтижелер</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">200<span>+</span></div>
+      <div class="stat-label">Оқушы</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5<span>+</span></div>
+      <div class="stat-label">Жыл тәжірибе</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98<span>%</span></div>
+      <div class="stat-label">Сәтті нәтиже</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Айналдыру</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">ДИСЦИПЛИНА <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">КҮШТІЛІК <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">OUTDOOR TRAINING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">КАЛЕСТЕНИКА <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">MENTAL TOUGHNESS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CALISTHENICS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">ВОРКАУТ <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">ДИСЦИПЛИНА <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">КҮШТІЛІК <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">OUTDOOR TRAINING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">КАЛЕСТЕНИКА <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">MENTAL TOUGHNESS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">CALISTHENICS <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">ВОРКАУТ <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-corner"></div>
+      <div class="about-img-frame">
+        <div class="about-img-placeholder">
+          <div style="text-align:center">
+            <div class="figure">KK</div>
+            <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,61,0,0.3);margin-top:8px">Фото орналасады</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-badge">
+        <div class="num">5+</div>
+        <div class="txt">Жыл тәжірибе</div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <div class="section-label"><span>Мен туралы</span></div>
+      <h2 class="section-title">ІШКІ<br>КҮШТІ<br>ОЯТ</h2>
+      <p>Мен Kuanysh Kusain — калестеника мен воркаут бойынша жеке тренер. Менің философиям қарапайым: зал мен жабдыққа мұқтаж болмай, өз денеңді инструмент ретінде пайдалану.</p>
+      <p>Outdoor training, шынайы нәтиже, нақты дисциплина. Мен сенімен бірге ең қиын жолды таңдаймын — өйткені ол ең жемісті жол.</p>
+      <p>@kuanyshko_09 — Instagram-дағы 200+ оқушымның дәлелі.</p>
+      <div class="about-tags">
+        <span class="tag">Калестеника</span>
+        <span class="tag">Воркаут</span>
+        <span class="tag">Outdoor</span>
+        <span class="tag">Жеке жаттығу</span>
+        <span class="tag">Онлайн коучинг</span>
+        <span class="tag">Mental Toughness</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="marquee-section" style="background:var(--black3)">
+  <div class="marquee-track" style="animation-direction:reverse">
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PULL-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">MUSCLE-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PLANCHE <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">HANDSTAND <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">FRONT LEVER <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PUSH-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">DIP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PULL-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">MUSCLE-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PLANCHE <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">HANDSTAND <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">FRONT LEVER <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">PUSH-UP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+    <span class="marquee-item" style="color:rgba(255,61,0,0.3)">DIP <span class="marquee-dot" style="color:rgba(255,61,0,0.5)">◆</span></span>
+  </div>
+</div>
+
+<!-- PROGRAMS -->
+<section class="programs" id="programs">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-label reveal"><span>Бағдарламалар</span></div>
+    <h2 class="section-title reveal">СЕНІҢ<br>ЖОЛЫҢ</h2>
+  </div>
+
+  <div class="programs-grid reveal">
+    <!-- Card 1 -->
+    <div class="program-card">
+      <div class="program-num">01</div>
+      <div class="program-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3 class="program-title">Бастауыш<br>Бағдарлама</h3>
+      <p class="program-desc">Нөлден бастап негізді қалыптастыру. Pull-up, push-up, dip — дұрыс техника мен прогрессия.</p>
+      <div class="program-price">15,000 <span>теңге / ай</span></div>
+      <div class="program-link">
+        <span>Толығырақ</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="program-card" style="border-top:2px solid var(--red)">
+      <div style="position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:var(--red);padding:4px 16px;font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:700;white-space:nowrap">Ең танымал</div>
+      <div class="program-num">02</div>
+      <div class="program-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3 class="program-title">PRO<br>Бағдарлама</h3>
+      <p class="program-desc">Muscle-up, front lever, handstand. Жеке жоспар, апта сайын бақылау, 3 ай нәтиже кепілдігі.</p>
+      <div class="program-price">35,000 <span>теңге / ай</span></div>
+      <div class="program-link">
+        <span>Толығырақ</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="program-card">
+      <div class="program-num">03</div>
+      <div class="program-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3 class="program-title">Elite<br>Коучинг</h3>
+      <p class="program-desc">1-on-1 жеке жаттығу. Outdoor + онлайн. Жан-жақты өзгеріс: тән, ақыл, дисциплина.</p>
+      <div class="program-price">65,000 <span>теңге / ай</span></div>
+      <div class="program-link">
+        <span>Толығырақ</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="results">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="results-header reveal">
+      <div>
+        <div class="section-label"><span>Нәтижелер</span></div>
+        <h2 class="section-title">ДӘЛЕЛ<br>ЖАЛҒАН<br>ЕМЕС</h2>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:72px;line-height:1;color:var(--white)">200<span style="color:var(--red)">+</span></div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)">Өзгерген өмір</div>
+      </div>
+    </div>
+
+    <div class="results-grid reveal">
+      <div class="result-card">
+        <div class="result-inner">
+          <div class="result-placeholder">ДО / ПОСЛЕ</div>
+          <div class="result-label">
+            <div class="result-name">Азамат К.</div>
+            <div class="result-period">3 ай — PRO бағдарлама</div>
+          </div>
+          <div class="result-badge">Before / After</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-inner">
+          <div class="result-placeholder">ДО / ПОСЛЕ</div>
+          <div class="result-label">
+            <div class="result-name">Бекзат Т.</div>
+            <div class="result-period">2 ай — Бастауыш</div>
+          </div>
+          <div class="result-badge">Before / After</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-inner">
+          <div class="result-placeholder">ДО / ПОСЛЕ</div>
+          <div class="result-label">
+            <div class="result-name">Ерлан М.</div>
+            <div class="result-period">4 ай — Elite</div>
+          </div>
+          <div class="result-badge">Before / After</div>
+        </div>
+      </div>
+      <div class="result-card">
+        <div class="result-inner" style="background:linear-gradient(135deg,#1a0000,#0f0f0f)">
+          <div style="text-align:center;padding:24px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:16px">Сенің нәтижең</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;line-height:1;color:var(--white)">ОСЫ ЖЕРДЕ</div>
+            <div style="font-size:11px;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-top:8px">болуы мүмкін</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-label reveal"><span>Пікірлер</span></div>
+    <h2 class="section-title reveal">ОЛАР<br>АЙТТЫ</h2>
+  </div>
+
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-text">Kuanysh-пен 3 ай ішінде 15 кг жоғалттым және алғаш рет muscle-up жасадым. Бұл тек дене жаттығуы емес — бүкіл ойлау жүйем өзгерді.</div>
+      <div class="testi-author">
+        <div class="author-avatar">АК</div>
+        <div>
+          <div class="author-name">Азамат Кенжебаев</div>
+          <div class="author-info">PRO бағдарлама · 3 ай</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-text">Бұрын залға бардым, нәтиже болмады. Kuanysh-тің методикасы мүлдем басқа. Outdoor тренинг, нақты прогрессия — 2 айда мойындамастай өзгердім.</div>
+      <div class="testi-author">
+        <div class="author-avatar">БТ</div>
+        <div>
+          <div class="author-name">Бекзат Тұрғанов</div>
+          <div class="author-info">Бастауыш · 2 ай</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <div class="testi-text">Elite коучинг — ол маған тек жаттығу жоспары ғана бермеді. Мотивация, дисциплина, ментал тренинг — бәрі бар. Нағыз инвестиция өзіңе.</div>
+      <div class="testi-author">
+        <div class="author-avatar">ЕМ</div>
+        <div>
+          <div class="author-name">Ерлан Мұратов</div>
+          <div class="author-info">Elite коучинг · 4 ай</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-block" id="contact">
+  <div class="cta-title">ӨЗГЕРУ<br>УАҚЫТЫ</div>
+  <p class="cta-sub">Күтудің уақыты жоқ. Бастауыш орындар шектеулі.</p>
+  <a href="https://instagram.com/kuanyshko_09" class="btn-dark">Instagram-да жазу</a>
+</div>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-label reveal"><span>Жиі сұрақтар</span></div>
+    <h2 class="section-title reveal">FAQ</h2>
+  </div>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Бастауыш үшін ба бұл бағдарлама?</span>
+        <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Иә, абсолютті бастауыштар үшін де, тәжірибелілер үшін де бағдарлама бар. Бастауыш бағдарлама нөлден бастайды — техника, негіздер, прогрессия.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Зал қажет пе?</span>
+        <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Жоқ. Калестеника мен воркаут принципі — өз дененді инструмент ретінде пайдалану. Outdoor тренинг, турник, брусья жеткілікті. Зал міндетті емес.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Нәтиже қанша уақытта байқалады?</span>
+        <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Алғашқы өзгерістер 3-4 аптада байқалады. Маңызды нәтиже 2-3 айда. Дисциплина мен нұсқауларды сақтасаң — нәтиже кепілдендірілген.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Онлайн жаттығу бар ма?</span>
+        <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>Иә, онлайн коучинг қолжетімді. Жеке жоспар, апта сайын прогрессиялды тексеру, WhatsApp/Telegram арқылы байланыс. Алматыда болмасаң да жаттыға аласың.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Тамақтану жоспары да кіре ме?</span>
+        <div class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="faq-a"><p>PRO және Elite бағдарламаларында тамақтану ұсыныстары кіреді. Жалпы принциптер, макроларды есептеу жолы және мақсатқа сай диета нұсқаулары беріледі.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo">KK<span style="color:var(--red)">.</span></a>
+        <p>Дисциплина арқылы бостандыққа. Калестеника мен воркаут бойынша Қазақстандағы ең инновациялық тренер.</p>
+        <div class="about-tags" style="margin-top:20px">
+          <span class="tag">Алматы</span>
+          <span class="tag">Онлайн</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Сілтемелер</h4>
+        <a href="#about">Мен туралы</a>
+        <a href="#programs">Бағдарламалар</a>
+        <a href="#results">Нәтижелер</a>
+        <a href="#testimonials">Пікірлер</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Бағдарламалар</h4>
+        <a href="#">Бастауыш</a>
+        <a href="#">PRO</a>
+        <a href="#">Elite Коучинг</a>
+        <a href="#">Онлайн</a>
+      </div>
+      <div class="footer-col">
+        <h4>Байланыс</h4>
+        <a href="https://instagram.com/kuanyshko_09">@kuanyshko_09</a>
+        <a href="#">Telegram</a>
+        <a href="#">WhatsApp</a>
+        <a href="#">Алматы, Қазақстан</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Kuanysh Kusain. Барлық құқықтар қорғалған.</p>
+      <div class="social-links">
+        <a href="https://instagram.com/kuanyshko_09" class="social-link">IG</a>
+        <a href="#" class="social-link">TG</a>
+        <a href="#" class="social-link">WA</a>
+        <a href="#" class="social-link">YT</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor — only on hover-capable devices
+const isTouch = window.matchMedia('(hover:none),(pointer:coarse)').matches;
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('follower');
+if (isTouch) {
+  cursor?.remove();
+  follower?.remove();
+} else {
+  let mx = 0, my = 0, fx = 0, fy = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+  });
+  (function animFollower(){
+    fx += (mx-fx)*0.12; fy += (my-fy)*0.12;
+    follower.style.left = fx+'px'; follower.style.top = fy+'px';
+    requestAnimationFrame(animFollower);
+  })();
+  document.querySelectorAll('a,button,.program-card,.testi-card,.result-card,.faq-q').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.classList.add('hover');follower.classList.add('hover')});
+    el.addEventListener('mouseleave',()=>{cursor.classList.remove('hover');follower.classList.remove('hover')});
+  });
+}
+
+
+// Header scroll
+const header = document.getElementById('header');
+window.addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible'); obs.unobserve(e.target)}
+  });
+},{threshold:0.15});
+reveals.forEach(el=>obs.observe(el));
+
+// FAQ
+function toggleFaq(el){
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// Stagger reveal
+document.querySelectorAll('.reveal').forEach((el,i)=>{
+  el.style.transitionDelay = (i*0.05)+'s';
+});
+</script>
+</body>
+</html>
